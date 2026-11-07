@@ -158,7 +158,9 @@ lamar_sistemas_operativos/
 
 **Proyecto académico · Sistemas Operativos**
 
-**Autor:** Moises Baldenegro Melendez
+**Autores:**
+- Pablo Arturo García Gutiérrez · 000053276
+- Moises Baldenegro Melendez · 000053466
 
 **Institución:** LAMAR · Campus Chapultepec
 
