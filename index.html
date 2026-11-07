@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#070b16" />
+  <meta name="description" content="Presentación interactiva: funciones y operaciones de los sistemas operativos, con simulaciones de planificación, memoria virtual, llamadas al sistema y más." />
+  <title>El Motor Detrás de la Pantalla · Sistemas Operativos</title>
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="bg-layer" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="bg-orb orb-a"></div>
+    <div class="bg-orb orb-b"></div>
+    <div class="bg-orb orb-c"></div>
+    <div class="bg-noise"></div>
+  </div>
+
+  <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+
+  <header class="deck-header">
+    <a class="brand" href="#1" data-goto="0" aria-label="Ir a la portada">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-text">SO<span class="brand-sub">/deck</span></span>
+    </a>
+    <div class="header-tools">
+      <span class="slide-counter"><b id="slideCurrent">1</b><span>/</span><span id="slideTotal">8</span></span>
+      <button class="icon-btn" id="fullscreenBtn" type="button" aria-label="Pantalla completa (F)" title="Pantalla completa (F)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="deck" id="deck">
+
+    <!-- ============ 1 · PORTADA ============ -->
+    <section class="slide slide-cover is-active" id="slide-1" data-title="Portada" aria-label="Portada">
+      <div class="slide-inner cover-grid">
+        <div class="cover-copy">
+          <p class="eyebrow"><span class="pulse-dot"></span> Sistemas Operativos · Exposición interactiva</p>
+          <h1 class="cover-title">El Motor Detrás<br />de la <span class="grad-text">Pantalla</span></h1>
+          <p class="cover-sub">Funciones y Operaciones en Sistemas Operativos</p>
+          <p class="cover-question">¿Cómo gestiona el SO el caos del hardware sin morir en el intento?</p>
+
+          <div class="cover-actions">
+            <button class="btn btn-primary" data-goto="1" type="button" id="startBtn">
+              Comenzar
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+            <span class="kbd-hint">Navega con <kbd>←</kbd> <kbd>→</kbd> o desliza</span>
+          </div>
+
+          <dl class="cover-meta">
+            <div><dt>Presentado por</dt><dd>[Tu Nombre]</dd></div>
+            <div><dt>Asignatura</dt><dd>Sistemas Operativos</dd></div>
+            <div><dt>Formato</dt><dd>8 diapositivas · 6 simulaciones</dd></div>
+          </dl>
+        </div>
+
+        <div class="cover-visual" aria-hidden="true">
+          <div class="orbit">
+            <div class="orbit-ring ring-a"></div>
+            <div class="orbit-ring ring-b"></div>
+            <div class="orbit-ring ring-c"></div>
+            <div class="orbit-core">
+              <span class="core-kicker">KERNEL</span>
+              <span class="core-name">SO</span>
+              <span class="core-sub">el árbitro</span>
+            </div>
+            <div class="orbit-node node-top">
+              <span class="node-dot dot-cyan"></span>Procesos
+            </div>
+            <div class="orbit-node node-right">
+              <span class="node-dot dot-indigo"></span>Memoria
+            </div>
+            <div class="orbit-node node-bottom">
+              <span class="node-dot dot-emerald"></span>Archivos
+            </div>
+            <div class="orbit-node node-left">
+              <span class="node-dot dot-amber"></span>E/S
+            </div>
+            <div class="orbit-spark spark-1"></div>
+            <div class="orbit-spark spark-2"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 2 · INTRODUCCIÓN ============ -->
+    <section class="slide" id="slide-2" data-title="Introducción" aria-label="Introducción">
+      <div class="slide-inner">
+        <header class="slide-head">
+          <p class="eyebrow">02 · Introducción</p>
+          <h2>¿Qué hace <span class="grad-text">realmente</span> un Sistema Operativo?</h2>
+          <p class="lead">No produce nada por sí mismo: es un intermediario y un asignador de recursos entre programas que compiten.</p>
+        </header>
+
+        <div class="two-col intro-grid">
+          <div class="intro-points">
+            <article class="point reveal">
+              <span class="point-icon tone-cyan">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/></svg>
+              </span>
+              <div>
+                <h3>El gran árbitro</h3>
+                <p>Cuando dos programas quieren la CPU, la RAM o el disco al mismo tiempo, alguien debe decidir. Ese alguien es el SO.</p>
+              </div>
+            </article>
+            <article class="point reveal">
+              <span class="point-icon tone-indigo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7Z"/><path d="M9 12l2 2 4-4"/></svg>
+              </span>
+              <div>
+                <h3>Doble misión</h3>
+                <p>Ofrecer una máquina cómoda y segura al programador, y a la vez exprimir al máximo el hardware disponible.</p>
+              </div>
+            </article>
+            <article class="point reveal">
+              <span class="point-icon tone-emerald">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
+              </span>
+              <div>
+                <h3>Objetivo de hoy</h3>
+                <p>Entender las <b>funciones</b> (lo que el SO promete) y las <b>operaciones</b> (los mecanismos técnicos que usa para cumplirlo).</p>
+              </div>
+            </article>
+          </div>
+
+          <div class="analogy card reveal" aria-label="Analogía del restaurante">
+            <div class="card-head">
+              <span class="card-kicker">La analogía del restaurante</span>
+              <span class="chip chip-live"><span class="pulse-dot small"></span>flujo en vivo</span>
+            </div>
+            <div class="analogy-flow">
+              <div class="analogy-col">
+                <div class="analogy-icon tone-cyan">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0M17 8h4M17 12h3M17 16h4"/></svg>
+                </div>
+                <h4>Clientes</h4>
+                <p>Los programas piden CPU, memoria y disco.</p>
+              </div>
+              <div class="analogy-arrows" aria-hidden="true">
+                <span class="flow-line"><i></i><i></i><i></i></span>
+              </div>
+              <div class="analogy-col analogy-col--host">
+                <div class="analogy-icon tone-indigo">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg>
+                </div>
+                <h4>Gerente (SO)</h4>
+                <p>Decide a quién se le sirve primero y cuánto.</p>
+              </div>
+              <div class="analogy-arrows" aria-hidden="true">
+                <span class="flow-line"><i></i><i></i><i></i></span>
+              </div>
+              <div class="analogy-col">
+                <div class="analogy-icon tone-emerald">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v10Z"/><path d="M4 15h16M8 6V4M16 6V4"/></svg>
+                </div>
+                <h4>Cocina</h4>
+                <p>El hardware ejecuta el trabajo real.</p>
+              </div>
+            </div>
+            <p class="analogy-foot">Sin gerente: caos, clientes que se pisan y comida que nunca llega. Con SO: orden, turnos y reglas claras.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3 · FUNCIONES ============ -->
+    <section class="slide" id="slide-3" data-title="Funciones" aria-label="Las cuatro funciones principales">
+      <div class="slide-inner">
+        <header class="slide-head">
+          <p class="eyebrow">03 · Funciones</p>
+          <h2>Las <span class="grad-text">4 funciones</span> principales</h2>
+          <p class="lead">El núcleo de sus responsabilidades. Toca cada tarjeta para ver el mecanismo que hay debajo.</p>
+        </header>
+
+        <div class="function-grid">
+          <details class="fn-card tone-cyan reveal">
+            <summary>
+              <span class="fn-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/></svg>
+              </span>
+              <span class="fn-body">
+                <span class="fn-number">01</span>
+                <span class="fn-title">Gestión de procesos</span>
+                <span class="fn-desc">Decide qué programa usa la CPU, cuándo y por cuánto tiempo.</span>
+              </span>
+              <span class="fn-toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="fn-detail">
+              <p>Mantiene el estado de cada proceso (listo, ejecutando, bloqueado), aplica políticas de planificación y realiza cambios de contexto para repartir la CPU con equidad.</p>
+              <div class="tag-row"><span class="tag">Scheduling</span><span class="tag">PCB</span><span class="tag">Context switch</span></div>
+            </div>
+          </details>
+
+          <details class="fn-card tone-indigo reveal">
+            <summary>
+              <span class="fn-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 17v4M12 17v4M17 17v4M7 11h10M7 14h6"/></svg>
+              </span>
+              <span class="fn-body">
+                <span class="fn-number">02</span>
+                <span class="fn-title">Administración de memoria</span>
+                <span class="fn-desc">Reparte la RAM para que los programas no choquen entre sí.</span>
+              </span>
+              <span class="fn-toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="fn-detail">
+              <p>Cada proceso recibe su propio espacio aislado. La memoria virtual y la paginación permiten usar más memoria de la que físicamente existe, sin que los programas lo noten.</p>
+              <div class="tag-row"><span class="tag">Memoria virtual</span><span class="tag">Paginación</span><span class="tag">Aislamiento</span></div>
+            </div>
+          </details>
+
+          <details class="fn-card tone-emerald reveal">
+            <summary>
+              <span class="fn-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>
+              </span>
+              <span class="fn-body">
+                <span class="fn-number">03</span>
+                <span class="fn-title">Almacenamiento y archivos</span>
+                <span class="fn-desc">Controla cómo se guardan, leen y organizan los datos.</span>
+              </span>
+              <span class="fn-toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="fn-detail">
+              <p>El sistema de archivos convierte bits crudos del disco en carpetas, archivos y metadatos. Añade journaling para resistir cortes de energía y permisos para proteger la información.</p>
+              <div class="tag-row"><span class="tag">ext4 / NTFS / APFS</span><span class="tag">Journaling</span><span class="tag">Permisos</span></div>
+            </div>
+          </details>
+
+          <details class="fn-card tone-amber reveal">
+            <summary>
+              <span class="fn-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0Z"/><path d="M12 17v4"/></svg>
+              </span>
+              <span class="fn-body">
+                <span class="fn-number">04</span>
+                <span class="fn-title">Abstracción del hardware (E/S)</span>
+                <span class="fn-desc">El programador no necesita saber cómo funciona electrónicamente un ratón o una pantalla.</span>
+              </span>
+              <span class="fn-toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="fn-detail">
+              <p>Los controladores (drivers) esconden la complejidad de cada dispositivo tras una interfaz uniforme: abrir, leer, escribir, cerrar. Las interrupciones avisan al SO cuando algo terminó.</p>
+              <div class="tag-row"><span class="tag">Drivers</span><span class="tag">Interrupciones</span><span class="tag">Buffering</span></div>
+            </div>
+          </details>
+        </div>
+
+        <div class="compare-strip reveal">
+          <div class="compare-side compare-bad">
+            <span class="compare-label">Sin SO</span>
+            <p>Programar el encendido de cada pin y registro de la placa para imprimir un simple <code>"Hola Mundo"</code>.</p>
+          </div>
+          <span class="compare-vs">vs</span>
+          <div class="compare-side compare-good">
+            <span class="compare-label">Con SO</span>
+            <p>Una API uniforme: <code>open()</code>, <code>read()</code>, <code>write()</code> y listo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 4 · SYSTEM CALLS ============ -->
+    <section class="slide" id="slide-4" data-title="Llamadas al sistema" aria-label="Llamadas al sistema">
+      <div class="slide-inner">
+        <header class="slide-head">
+          <p class="eyebrow">04 · Operación clave 1</p>
+          <h2>Las <span class="grad-text">llamadas al sistema</span></h2>
+          <p class="lead">El puente entre el usuario y el hardware: la única interfaz legítima para pedirle favores al núcleo.</p>
+        </header>
+
+        <div class="two-col syscall-grid">
+          <div class="syscall-copy">
+            <div class="mini-card reveal">
+              <h3>El cambio de modo</h3>
+              <p>El programa vive en <b class="tone-emerald">modo usuario</b> (restringido). Para tocar hardware debe cruzar una puerta segura y entrar en <b class="tone-rose">modo kernel</b> (privilegio total). Al terminar, vuelve a modo usuario.</p>
+            </div>
+            <ul class="check-list reveal">
+              <li><b>fork()</b> · crear un nuevo proceso</li>
+              <li><b>read() / write()</b> · leer o escribir en un archivo</li>
+              <li><b>chmod()</b> · cambiar permisos de un archivo</li>
+            </ul>
+            <div class="callout reveal">
+              <span class="callout-icon">!</span>
+              <p>No puedes saltarte la puerta: el hardware lo impide mediante anillos de protección. Un acceso ilegal termina en una excepción, no en acceso concedido.</p>
+            </div>
+          </div>
+
+          <div class="sim card sim-syscall reveal" id="syscallSim">
+            <div class="sim-head">
+              <span class="card-kicker">Simulador · User ⇄ Kernel</span>
+              <span class="mode-badge is-user" id="sysMode">MODO USUARIO</span>
+            </div>
+
+            <div class="syscall-bus" aria-hidden="true">
+              <div class="bus-step is-on" data-sys-step="0"><span>Programa</span><small>user space</small></div>
+              <div class="bus-step" data-sys-step="1"><span>Puerta</span><small>trap / syscall</small></div>
+              <div class="bus-step" data-sys-step="2"><span>Kernel</span><small>privileged</small></div>
+              <div class="bus-step" data-sys-step="3"><span>Hardware</span><small>device / FS</small></div>
+              <div class="bus-token" id="sysToken" aria-hidden="true"></div>
+            </div>
+
+            <div class="syscall-buttons">
+              <button class="btn btn-chip is-cyan" data-syscall="fork" type="button"><code>fork()</code></button>
+              <button class="btn btn-chip is-indigo" data-syscall="read" type="button"><code>read()</code></button>
+              <button class="btn btn-chip is-emerald" data-syscall="write" type="button"><code>write()</code></button>
+              <button class="btn btn-chip is-amber" data-syscall="chmod" type="button"><code>chmod()</code></button>
+            </div>
+
+            <div class="terminal" id="sysTerminal" role="log" aria-live="polite">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>syscall.log</span></div>
+              <div class="terminal-body" id="sysLog">
+                <p class="log-line log-muted">Esperando una llamada al sistema…</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 5 · PROCESOS ============ -->
+    <section class="slide" id="slide-5" data-title="Procesos" aria-label="Gestión de procesos y concurrencia">
+      <div class="slide-inner">
+        <header class="slide-head">
+          <p class="eyebrow">05 · Operación clave 2</p>
+          <h2>Procesos y <span class="grad-text">concurrencia</span></h2>
+          <p class="lead">Haciendo mil cosas a la vez… o al menos simulándolo muy bien. Elige una simulación.</p>
+        </header>
+
+        <div class="tabs" role="tablist" aria-label="Simulaciones de procesos">
+          <button class="tab is-active" role="tab" aria-selected="true" data-tab="sched" type="button">Planificador</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="context" type="button">Cambio de contexto</button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="mutex" type="button">Sincronización</button>
+        </div>
+
+        <!-- Tab: Planificador -->
+        <div class="tab-panel is-active" data-panel="sched" role="tabpanel">
+          <div class="sim card" id="schedSim">
+            <div class="sim-head">
+              <span class="card-kicker">Simulador · Planificación de CPU</span>
+              <div class="sim-controls">
+                <label class="field">
+                  <span>Algoritmo</span>
+                  <select id="schedAlgo">
+                    <option value="fifo">FIFO</option>
+                    <option value="sjf">SJF (no apropiativo)</option>
+                    <option value="rr" selected>Round Robin</option>
+                  </select>
+                </label>
+                <label class="field field-quantum" id="quantumField">
+                  <span>Quantum</span>
+                  <input type="number" id="schedQuantum" min="1" max="10" value="2" />
+                </label>
+              </div>
+            </div>
+
+            <div class="sched-layout">
+              <div class="sched-config">
+                <table class="proc-table">
+                  <thead><tr><th>Proceso</th><th>Llegada</th><th>Ráfaga</th></tr></thead>
+                  <tbody id="schedProcesses">
+                    <tr><td>P1</td><td><input type="number" min="0" max="20" value="0" aria-label="Llegada P1" /></td><td><input type="number" min="1" max="20" value="5" aria-label="Ráfaga P1" /></td></tr>
+                    <tr><td>P2</td><td><input type="number" min="0" max="20" value="1" aria-label="Llegada P2" /></td><td><input type="number" min="1" max="20" value="3" aria-label="Ráfaga P2" /></td></tr>
+                    <tr><td>P3</td><td><input type="number" min="0" max="20" value="2" aria-label="Llegada P3" /></td><td><input type="number" min="1" max="20" value="1" aria-label="Ráfaga P3" /></td></tr>
+                    <tr><td>P4</td><td><input type="number" min="0" max="20" value="3" aria-label="Llegada P4" /></td><td><input type="number" min="1" max="20" value="4" aria-label="Ráfaga P4" /></td></tr>
+                  </tbody>
+                </table>
+                <div class="btn-row">
+                  <button class="btn btn-primary btn-sm" id="schedRun" type="button">Ejecutar</button>
+                  <button class="btn btn-ghost btn-sm" id="schedReset" type="button">Reiniciar</button>
+                </div>
+                <p class="algo-note" id="schedNote">Round Robin reparte la CPU en turnos de duración fija (quantum).</p>
+              </div>
+
+              <div class="sched-stage">
+                <div class="cpu-box">
+                  <span class="cpu-label">CPU</span>
+                  <span class="cpu-proc" id="schedCpu">—</span>
+                  <span class="cpu-time" id="schedClock">t = 0</span>
+                </div>
+                <div class="ready-queue">
+                  <span class="rq-label">Cola de listos</span>
+                  <div class="rq-chips" id="schedQueue"><span class="rq-empty">—</span></div>
+                </div>
+                <div class="gantt-wrap">
+                  <div class="gantt" id="gantt" aria-label="Diagrama de Gantt de la planificación"></div>
+                  <div class="gantt-axis" id="ganttAxis"></div>
+                </div>
+                <div class="metrics">
+                  <div class="metric"><span>Espera media</span><b id="mAvgWait">—</b></div>
+                  <div class="metric"><span>Retorno medio</span><b id="mAvgTat">—</b></div>
+                  <div class="metric"><span>Cambios de contexto</span><b id="mCtx">—</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Context switch -->
+        <div class="tab-panel" data-panel="context" role="tabpanel">
+          <div class="sim card" id="ctxSim">
+            <div class="sim-head">
+              <span class="card-kicker">Simulador · Cambio de contexto</span>
+              <button class="btn btn-primary btn-sm" id="ctxSwitch" type="button">Cambiar contexto</button>
+            </div>
+            <div class="ctx-layout">
+              <div class="pcb" id="pcbA" data-proc="A">
+                <div class="pcb-head"><span class="pcb-name">Proceso A</span><span class="pcb-state is-running" data-state>EJEC</span></div>
+                <ul class="reg-list">
+                  <li><span>PC</span><b data-f="pc">0x1F4</b></li>
+                  <li><span>SP</span><b data-f="sp">0x7FF0</b></li>
+                  <li><span>R1</span><b data-f="r1">42</b></li>
+                  <li><span>Estado</span><b data-f="state">Ejecutando</b></li>
+                </ul>
+              </div>
+
+              <div class="cpu-panel">
+                <span class="cpu-panel-title">CPU · Registros</span>
+                <div class="cpu-regs">
+                  <div class="reg"><span>PC</span><b id="cpuPc">0x1F4</b></div>
+                  <div class="reg"><span>SP</span><b id="cpuSp">0x7FF0</b></div>
+                  <div class="reg"><span>R1</span><b id="cpuR1">42</b></div>
+                </div>
+                <div class="ctx-arrow" id="ctxArrow" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16M14 6l6 6-6 6"/></svg>
+                </div>
+                <p class="ctx-cost">Coste típico: <b>1–10 µs</b></p>
+              </div>
+
+              <div class="pcb is-idle" id="pcbB" data-proc="B">
+                <div class="pcb-head"><span class="pcb-name">Proceso B</span><span class="pcb-state" data-state>LISTO</span></div>
+                <ul class="reg-list">
+                  <li><span>PC</span><b data-f="pc">0x8A0</b></li>
+                  <li><span>SP</span><b data-f="sp">0x7E20</b></li>
+                  <li><span>R1</span><b data-f="r1">17</b></li>
+                  <li><span>Estado</span><b data-f="state">Listo</b></li>
+                </ul>
+              </div>
+            </div>
+            <div class="terminal terminal-inline">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>context.log</span></div>
+              <div class="terminal-body" id="ctxLog">
+                <p class="log-line log-muted">El proceso A está en la CPU. Pulsa “Cambiar contexto”.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Mutex -->
+        <div class="tab-panel" data-panel="mutex" role="tabpanel">
+          <div class="sim card" id="mutexSim">
+            <div class="sim-head">
+              <span class="card-kicker">Simulador · Condición de carrera</span>
+              <label class="switch">
+                <input type="checkbox" id="mutexToggle" checked />
+                <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+                <span class="switch-label">Mutex activado</span>
+              </label>
+            </div>
+
+            <div class="mutex-layout">
+              <div class="mutex-workers">
+                <div class="worker">
+                  <div class="worker-head"><span>T1</span><span class="worker-progress" id="t1Progress">0%</span></div>
+                  <div class="bar"><span id="t1Bar"></span></div>
+                </div>
+                <div class="worker">
+                  <div class="worker-head"><span>T2</span><span class="worker-progress" id="t2Progress">0%</span></div>
+                  <div class="bar"><span id="t2Bar"></span></div>
+                </div>
+              </div>
+
+              <div class="counter-box">
+                <span class="counter-label">Contador compartido</span>
+                <span class="counter-value" id="mutexValue">0</span>
+                <div class="counter-meta">
+                  <span>Esperado: <b id="mutexExpected">0</b></span>
+                  <span class="lost-count">Perdidas: <b id="mutexLost">0</b></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="btn-row">
+              <button class="btn btn-primary btn-sm" id="mutexRun" type="button">Ejecutar</button>
+              <button class="btn btn-ghost btn-sm" id="mutexReset" type="button">Reiniciar</button>
+            </div>
+
+            <div class="terminal terminal-inline">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>race.log</span></div>
+              <div class="terminal-body" id="mutexLog">
+                <p class="log-line log-muted">Activa o desactiva el mutex y ejecuta para comparar los resultados.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 6 · MEMORIA VIRTUAL ============ -->
+    <section class="slide" id="slide-6" data-title="Memoria virtual" aria-label="Administración de memoria virtual">
+      <div class="slide-inner">
+        <header class="slide-head">
+          <p class="eyebrow">06 · Operación clave 3</p>
+          <h2>Memoria virtual: <span class="grad-text">mucho con muy poco</span></h2>
+          <p class="lead">El truco de magia: hacerle creer a los programas que tienen RAM infinita usando espacio del disco.</p>
+        </header>
+
+        <div class="two-col memory-grid">
+          <div class="memory-copy">
+            <div class="mini-card reveal">
+              <h3>Páginas y marcos</h3>
+              <p>La memoria se divide en trozos fijos llamados <b>páginas</b>. La RAM se divide en <b>marcos</b> del mismo tamaño. El SO traduce direcciones virtuales a direcciones físicas.</p>
+            </div>
+            <div class="mini-card reveal">
+              <h3>Fallo de página</h3>
+              <p>El programa pide un dato que está en el disco y no en la RAM. El SO detiene el proceso, trae la página, actualiza la tabla y continúa. Si no hay marcos libres, expulsa una página (FIFO o LRU).</p>
+            </div>
+            <div class="tag-row reveal">
+              <span class="tag">Swap</span><span class="tag">Page fault</span><span class="tag">Reemplazo LRU</span>
+            </div>
+          </div>
+
+          <div class="sim card sim-memory reveal" id="memorySim">
+            <div class="sim-head">
+              <span class="card-kicker">Simulador · Paginación</span>
+              <div class="sim-controls">
+                <label class="field">
+                  <span>Reemplazo</span>
+                  <select id="memPolicy">
+                    <option value="fifo" selected>FIFO</option>
+                    <option value="lru">LRU</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div class="mem-stats">
+              <span class="stat">Accesos <b id="memAccesses">0</b></span>
+              <span class="stat stat-hit">Aciertos <b id="memHits">0</b></span>
+              <span class="stat stat-fault">Fallos <b id="memFaults">0</b></span>
+              <span class="stat">Tasa de fallo <b id="memRate">0%</b></span>
+            </div>
+
+            <div class="mem-panels">
+              <div class="mem-panel">
+                <span class="mem-panel-title">RAM · 4 marcos</span>
+                <div class="frames" id="memFrames"></div>
+              </div>
+              <div class="mem-panel">
+                <span class="mem-panel-title">Disco · swap</span>
+                <div class="swap" id="memSwap"></div>
+              </div>
+            </div>
+
+            <div class="mem-panel mem-table-panel">
+              <span class="mem-panel-title">Tabla de páginas</span>
+              <div class="page-table" id="memPageTable"></div>
+            </div>
+
+            <div class="access-controls">
+              <span class="access-label">Acceder a página:</span>
+              <div class="access-buttons" id="memAccessButtons"></div>
+              <button class="btn btn-ghost btn-sm" id="memAuto" type="button">Secuencia</button>
+              <button class="btn btn-ghost btn-sm" id="memReset" type="button">Reiniciar</button>
+            </div>
+
+            <div class="terminal terminal-inline">
+              <div class="terminal-bar"><i></i><i></i><i></i><span>paging.log</span></div>
+              <div class="terminal-body" id="memLog">
+                <p class="log-line log-muted">Accede a una página para comenzar. Los marcos están vacíos.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 7 · ARCHIVOS Y SEGURIDAD ============ -->
+    <section class="slide" id="slide-7" data-title="Archivos y seguridad" aria-label="Gestión de archivos y seguridad">
+      <div class="slide-inner">
+        <header class="slide-head">
+          <p class="eyebrow">07 · Operación clave 4</p>
+          <h2>Archivos y <span class="grad-text">seguridad</span></h2>
+          <p class="lead">Organización y protección: de bits crudos a carpetas, archivos y permisos.</p>
+        </header>
+
+        <div class="two-col security-grid">
+          <div class="security-copy">
+            <div class="mini-card reveal">
+              <h3>Sistemas de archivos</h3>
+              <p><b>NTFS</b> (Windows), <b>ext4</b> (Linux) y <b>APFS</b> (macOS) son la estructura lógica que mapea los bits del disco en carpetas y archivos. Añaden metadatos, journaling y control de acceso.</p>
+            </div>
+            <div class="fs-tree card reveal" aria-label="Ejemplo de árbol de archivos">
+              <div class="fs-tree-head">/home/estudiante</div>
+              <ul class="fs-list">
+                <li><span class="fs-ico is-folder"></span>proyectos</li>
+                <li class="is-child"><span class="fs-ico is-file"></span>sistemas_operativos.html</li>
+                <li class="is-child"><span class="fs-ico is-file"></span>notas.md</li>
+                <li><span class="fs-ico is-folder"></span>descargas</li>
+              </ul>
+            </div>
+            <div class="tag-row reveal">
+              <span class="tag">Crear</span><span class="tag">Abrir</span><span class="tag">Leer</span><span class="tag">Escribir</span><span class="tag">Cerrar</span>
+            </div>
+          </div>
+
+          <div class="sim card sim-permissions reveal" id="permSim">
+            <div class="sim-head">
+              <span class="card-kicker">Simulador · Permisos</span>
+              <span class="chip" id="permSymbolic">-rw-r--r--</span>
+            </div>
+
+            <div class="perm-file">
+              <span class="fs-ico is-file big"></span>
+              <input type="text" id="permFile" value="proyecto.txt" spellcheck="false" aria-label="Nombre del archivo" />
+            </div>
+
+            <div class="perm-matrix" id="permMatrix">
+              <div class="perm-col">
+                <span class="perm-role">Propietario</span>
+                <label class="perm-bit"><input type="checkbox" data-role="owner" data-bit="r" /><span>r</span><small>leer</small></label>
+                <label class="perm-bit"><input type="checkbox" data-role="owner" data-bit="w" /><span>w</span><small>escribir</small></label>
+                <label class="perm-bit"><input type="checkbox" data-role="owner" data-bit="x" /><span>x</span><small>ejecutar</small></label>
+              </div>
+              <div class="perm-col">
+                <span class="perm-role">Grupo</span>
+                <label class="perm-bit"><input type="checkbox" data-role="group" data-bit="r" /><span>r</span><small>leer</small></label>
+                <label class="perm-bit"><input type="checkbox" data-role="group" data-bit="w" /><span>w</span><small>escribir</small></label>
+                <label class="perm-bit"><input type="checkbox" data-role="group" data-bit="x" /><span>x</span><small>ejecutar</small></label>
+              </div>
+              <div class="perm-col">
+                <span class="perm-role">Otros</span>
+                <label class="perm-bit"><input type="checkbox" data-role="others" data-bit="r" /><span>r</span><small>leer</small></label>
+                <label class="perm-bit"><input type="checkbox" data-role="others" data-bit="w" /><span>w</span><small>escribir</small></label>
+                <label class="perm-bit"><input type="checkbox" data-role="others" data-bit="x" /><span>x</span><small>ejecutar</small></label>
+              </div>
+            </div>
+
+            <div class="perm-output">
+              <div class="perm-octal"><span>Octal</span><b id="permOctal">644</b></div>
+              <code class="perm-command" id="permCommand">chmod 644 proyecto.txt</code>
+            </div>
+
+            <div class="perm-presets">
+              <button class="btn btn-ghost btn-sm" data-perm-preset="644" type="button">644</button>
+              <button class="btn btn-ghost btn-sm" data-perm-preset="755" type="button">755</button>
+              <button class="btn btn-ghost btn-sm" data-perm-preset="600" type="button">600</button>
+              <button class="btn btn-ghost btn-sm" data-perm-preset="777" type="button">777</button>
+            </div>
+
+            <p class="perm-legend" id="permLegend">El propietario puede leer y escribir; el grupo puede leer; otros solo pueden leer.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 8 · CONCLUSIONES ============ -->
+    <section class="slide" id="slide-8" data-title="Conclusiones" aria-label="Conclusiones">
+      <div class="slide-inner">
+        <header class="slide-head">
+          <p class="eyebrow">08 · Conclusiones</p>
+          <h2>El SO: el <span class="grad-text">héroe invisible</span></h2>
+          <p class="lead">Sin sus funciones y operaciones, programar sería hablar directamente con los electrones.</p>
+        </header>
+
+        <div class="conclusion-grid">
+          <article class="conclusion-card tone-cyan reveal">
+            <span class="conclusion-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7Z"/><path d="M9 12l2 2 4-4"/></svg>
+            </span>
+            <h3>Abstracción perfecta</h3>
+            <p>Una API uniforme esconde miles de detalles del hardware. Escribimos <code>read()</code>, no instrucciones de disco.</p>
+          </article>
+          <article class="conclusion-card tone-emerald reveal">
+            <span class="conclusion-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18V9M9 18V5M14 18v-6M19 18v-9"/><path d="M3 21h18"/></svg>
+            </span>
+            <h3>Eficiencia y equidad</h3>
+            <p>Maximiza el uso del hardware sin que ningún proceso muera de hambre (<i>starvation</i>).</p>
+          </article>
+          <article class="conclusion-card tone-amber reveal">
+            <span class="conclusion-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+            </span>
+            <h3>Seguridad y aislamiento</h3>
+            <p>Cada proceso vive en su burbuja. Los permisos y los anillos de protección evitan que uno dañe a los demás.</p>
+          </article>
+        </div>
+
+        <div class="recap">
+          <span class="recap-label">Lo que vimos hoy</span>
+          <div class="recap-items">
+            <span class="recap-item">Llamadas al sistema</span>
+            <span class="recap-item">Planificación de CPU</span>
+            <span class="recap-item">Cambio de contexto</span>
+            <span class="recap-item">Sincronización</span>
+            <span class="recap-item">Memoria virtual</span>
+            <span class="recap-item">Archivos y permisos</span>
+          </div>
+        </div>
+
+        <div class="closing card reveal">
+          <p class="closing-quote">“El mejor sistema operativo es el que no notas: simplemente funciona.”</p>
+          <div class="closing-actions">
+            <button class="btn btn-ghost btn-sm" data-goto="0" type="button">Volver al inicio</button>
+            <span class="kbd-hint">Gracias · <kbd>←</kbd> <kbd>→</kbd> para navegar</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <nav class="deck-nav" aria-label="Navegación de diapositivas">
+    <button class="nav-btn" id="prevBtn" type="button" aria-label="Anterior">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="dots" id="dots" role="tablist" aria-label="Ir a diapositiva"></div>
+    <button class="nav-btn" id="nextBtn" type="button" aria-label="Siguiente">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+    </button>
+  </nav>
+
+  <script src="js/deck.js" defer></script>
+  <script src="js/sims.js" defer></script>
+  <script src="js/scheduler.js" defer></script>
+  <script src="js/concurrency.js" defer></script>
+  <script src="js/memory.js" defer></script>
+  <script src="js/permissions.js" defer></script>
+</body>
+</html>
